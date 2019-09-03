@@ -25,11 +25,21 @@ app.get("/urls", (req, res) => {
     res.render("urls_index", templateVars);
   });
 
+  // edit a url
+app.post("/urls/:shortURL", (req, res) => {
+    const newURL = req.body.newURL;
+    console.log(newURL);
+    urlDatabase[newURL]= urlDatabase[req.params.shortURL];
+    delete urlDatabase[req.params.shortURL];
+    res.redirect("/urls");
+});
+
 // route to handle POST request
 app.post("/urls", (req, res) => {
     console.log(req.body); // log the POST req body to console
     res.send("Ok");        // respond with "Ok" (tb replaced)
 });
+
 
 // delete a url
 app.post("/urls/:shortURL/delete", (req, res) => {
