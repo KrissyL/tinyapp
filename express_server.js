@@ -5,7 +5,9 @@ const bodyParser = require("body-parser");
 
 // generates a random 6 char alphanumeric string
 function generateRandomString() {
-
+    const randString = Math.random().toString(15).replace('0.', ' ');
+    const randShortURL = randString.substring(1, 7);
+    return randShortURL;
 }
 // uses body-parser to make POST req human readable
 app.use(bodyParser.urlencoded({extended: true}));
@@ -34,10 +36,14 @@ app.post("/urls/:shortURL", (req, res) => {
     res.redirect("/urls");
 });
 
-// route to handle POST request
+// post a new shortURL
 app.post("/urls", (req, res) => {
-    console.log(req.body); // log the POST req body to console
-    res.send("Ok");        // respond with "Ok" (tb replaced)
+    const newLongURL = req.body.longURL; // log the POST req body to console
+    const newShortURL = generateRandomString();
+    console.log(newShortURL);
+    urlDatabase[newShortURL] = newLongURL;
+    console.log(newLongURL);
+    res.redirect("/urls");
 });
 
 
