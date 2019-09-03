@@ -1,6 +1,14 @@
 const express = require("express");
 const app = express();
 const PORT = 8080; // default port
+const bodyParser = require("body-parser");
+
+// generates a random 6 char alphanumeric string
+function generateRandomString() {
+
+}
+// uses body-parser to make POST req human readable
+app.use(bodyParser.urlencoded({extended: true}));
 
 // set ejs as view engine
 app.set("view engine", "ejs");
@@ -16,6 +24,17 @@ app.get("/urls", (req, res) => {
     let templateVars = { urls: urlDatabase };
     res.render("urls_index", templateVars);
   });
+
+// route to handle POST request
+app.post("/urls", (req, res) => {
+    console.log(req.body); // log the POST req body to console
+    res.send("Ok");        // respond with "Ok" (tb replaced)
+});
+
+// make a route for "/urls_new"
+app.get("/urls/new", (req, res) => {
+    res.render("urls_new");
+});
 
 // make a route for "urls_show"
 app.get("/urls/:shortURL", (req, res) => {
