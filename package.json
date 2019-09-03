@@ -20,7 +20,7 @@
   "homepage": "https://github.com/KrissyL/tinyapp#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "ejs": ">=2.5.5",
+    "ejs": "^2.7.1",
     "express": "^4.17.1"
   },
   "devDependencies": {
