@@ -31,6 +31,13 @@ app.post("/urls", (req, res) => {
     res.send("Ok");        // respond with "Ok" (tb replaced)
 });
 
+// make a route to handle shortURL reqs
+app.get("/u/:shortURL", (req, res) => {
+    const longURL = urlDatabase[req.params.shortURL];
+    console.log(req.params.shortURL);
+    res.redirect(longURL);
+});
+
 // make a route for "/urls_new"
 app.get("/urls/new", (req, res) => {
     res.render("urls_new");
