@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const PORT = 8080; // default port
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 
 // generates a random 6 char alphanumeric string
 function generateRandomString() {
@@ -11,6 +12,9 @@ function generateRandomString() {
 }
 // uses body-parser to make POST req human readable
 app.use(bodyParser.urlencoded({extended: true}));
+
+//uses cookie parser to make cookies readable
+app.use(cookieParser());
 
 // set ejs as view engine
 app.set("view engine", "ejs");
@@ -23,7 +27,10 @@ const urlDatabase = {
 
 // make a route for "/urls"
 app.get("/urls", (req, res) => {
-    let templateVars = { urls: urlDatabase };
+    let templateVars = { 
+        username: req.cookies["username"],
+        urls: urlDatabase 
+        };
     res.render("urls_index", templateVars);
   });
 
@@ -46,6 +53,19 @@ app.post("/urls", (req, res) => {
     res.redirect("/urls");
 });
 
+// post a username for login
+app.post("/login", (req, res) => {
+    const newUser = req.body.userLogin; // the username entered in login form
+    res.cookie("username", newUser);
+    res.redirect("/urls");
+});
+
+// post a logout
+app.post("/logout", (req, res) =>{
+    res.clearCookie("username");
+    res.redirect("/urls");
+});
+
 
 // delete a url
 app.post("/urls/:shortURL/delete", (req, res) => {
@@ -61,13 +81,18 @@ app.get("/u/:shortURL", (req, res) => {
 
 // make a route for "/urls_new"
 app.get("/urls/new", (req, res) => {
-    res.render("urls_new");
+    let templateVars = {
+        username: req.cookies["username"]
+    };
+    res.render("urls_new", templateVars);
 });
 
 // make a route for "urls_show"
 app.get("/urls/:shortURL", (req, res) => {
-    let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL]
-    };
+    let templateVars = { 
+        username: req.cookies["username"],
+        shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL]
+        };
     res.render("urls_show", templateVars);
 });
 
