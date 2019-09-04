@@ -49,17 +49,10 @@ app.post("/urls", (req, res) => {
   urlDatabase[newShortURL] = newLongURL;
   res.redirect("/urls");
 });
-// const users = {
-//     "userRandomID": {
-//         id: "userRandomID",
-//         email: "user@example.com",
-//         password: "purple-monkey-dinosaur"
-//     }
-// };
+
 //find user
 const findUserByEmail = ((email) => {
   for (const userID in users) {
-    // console.log("user.email", user.email)
     if (users[userID].email === email) {
       return users[userID];
     }
@@ -68,7 +61,6 @@ const findUserByEmail = ((email) => {
 // post a user registration
 app.post("/register", (req, res) =>{
   if (findUserByEmail(req.body.email)) {
-    console.log("hi");
     res.status(403);
     res.send("User already exists");
   } else {
