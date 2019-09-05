@@ -15,14 +15,18 @@
         <% include partials/_header %>
 
         <main style="margin: 1em;">
-            <h3>Create TinyURL</h3>
-            <form class="form-inline" action="/urls" method="POST">
-                <div class="form-group mb-2">
-                    <label for="longURL">Enter a URL:</label>
-                    <input class="form-control" type="url" name="longURL" placeholder="http://" style="width: 300px; margin: 1em">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
+            <% if (!user) {%>
+                <p class="card-text">You Have to Login to Create a New Short URL<a href="/login" style="margin-left: 1em">Login Here</a></p>
+            <%} else {%>
+                <h3>Create TinyURL</h3>
+                <form class="form-inline" action="/urls" method="POST">
+                    <div class="form-group mb-2">
+                        <label for="longURL">Enter a URL:</label>
+                        <input class="form-control" type="url" name="longURL" placeholder="http://" style="width: 300px; margin: 1em">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            <%} %>
         </main>
 
         <!-- Bootstrap JS -->

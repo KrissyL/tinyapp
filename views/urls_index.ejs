@@ -16,6 +16,12 @@
 
     <main style="margin: 1em;">
         <h3>My URLs</h3>
+        <% if (!user) {%>
+            <div class="card center-text">
+                <p class="card-text">You Need to Login in first!</p>
+                <a href="/login">Login</a>
+            </div>
+        <%} else {%>            
         <table class="table">
             <thead>
                 <tr>
@@ -29,13 +35,14 @@
                 <% for(let url in urls) { %>
                     <tr>
                         <td><%= url %></td>
-                        <td><%= urls[url] %></td>
+                        <td><%= urls[url]["longURL"] %></td>
                         <td><form method="GET" action="/urls/<%= url %>"><button type="submit">edit</button></form></td>
                         <td><form method="POST" action="/urls/<%= url %>/delete"><button type="submit">delete</button></form></td>
                     </tr>
                 <% } %>
             </tbody>
         </table>
+        <%} %>
     </main>
 
     <!-- Bootstrap JS -->
