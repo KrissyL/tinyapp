@@ -3,6 +3,7 @@ const app = express();
 const PORT = 8080; // default port
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const bcrypt = require("bcrypt");
 
 // generates a random 6 char alphanumeric string
 function generateRandomString() {
@@ -90,7 +91,7 @@ app.post("/register", (req, res) =>{
     const newUser = {
       id: generateRandomString(),
       email: req.body.email,
-      password: req.body.password
+      hashedPassword: bcrypt.hashSync(req.body.password, 10)
     };
     users[newUser.id] = newUser;
     res.cookie("user_id", newUser.id);
@@ -104,7 +105,8 @@ app.post("/login", (req, res) => {
   if (!user) {
     res.send("Incorrect Login");
   } else {
-    if (req.body.password === user.password) {
+    
+    if (bcrypt.compareSync(req.body.password, user.hashedPassword)) {
       res.cookie("user_id", user.id);
       res.redirect("/urls");
     }
