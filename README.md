@@ -5,9 +5,9 @@ All shortened URLs can be accessed by anyone as long as they have the exact link
 
 ## Final Product
 
-!["The user's main page displays all the shortened URLs that they have created"](#)
-!["All URLs can be seen by anyone, but only their creators can edit them"](#)
-!["In order to create shortened URLs, users must have a registered account"](#)
+!["The user's main page displays all the shortened URLs that they have created"](https://github.com/KrissyL/tinyapp/blob/master/docs/urls_page.png)
+!["All URLs can be seen by anyone, but only their creators can edit them"](https://github.com/KrissyL/tinyapp/blob/master/docs/shortURL_page.png)
+!["In order to create shortened URLs, users must have a registered account"](https://github.com/KrissyL/tinyapp/blob/master/docs/user_specific_features.png)
 
 ## Dependencies
 
