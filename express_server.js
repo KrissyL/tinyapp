@@ -4,7 +4,7 @@ const PORT = 8080; // default port
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const cookieSession = require("cookie-session");
-const { users, urlDatabase, generateRandomString, urlsForUser } = require("./constants");
+const { users, urlDatabase, generateRandomString, validEmail, validPassword, urlsForUser } = require("./constants");
 const { findUserByEmail } = require("./helpers");
 // uses body-parser to make POST req human readable
 app.use(bodyParser.urlencoded({extended: true}));
@@ -26,7 +26,8 @@ app.post("/urls/:shortURL", (req, res) => {
   const user_id = req.session.user_id;
   const user = users[user_id];
   if (!user) {
-    res.send("Nope, can't do that");
+    res.status(403);
+    res.send("You must be the creator to edit a url");
   } else {
     const newURL = req.body.newURL;
     urlDatabase[newURL] = urlDatabase[req.params.shortURL];
@@ -37,21 +38,33 @@ app.post("/urls/:shortURL", (req, res) => {
 
 // post a new shortURL
 app.post("/urls", (req, res) => {
-  const newLongURL = req.body.longURL;
-  const newShortURL = generateRandomString();
-  const user = req.session.user_id;
-  urlDatabase[newShortURL] =
-  {
-    longURL: newLongURL,
-    userID: user
-  };
-  res.redirect("/urls");
+  const user_id = req.session.user_id;
+  const user = users[user_id];
+  if (!user) {
+    res.status(403);
+    res.send("You must be the creator to edit a url");
+  } else {
+    const newLongURL = req.body.longURL;
+    const newShortURL = generateRandomString();
+    const user = req.session.user_id;
+    urlDatabase[newShortURL] =
+    {
+      longURL: newLongURL,
+      userID: user
+    };
+    res.redirect("/urls");
+  }
 });
-
 // post a user registration
 app.post("/register", (req, res) =>{
   if (findUserByEmail(req.body.email, users)) {
     res.send("User already exists");
+  }
+  if (!validEmail(req.body.email)) {
+    res.send("Email is invalid, please try again");
+  }
+  if (!validPassword(req.body.password)){
+    res.send("Password is too short, please try again");
   } else {
     const newUser = {
       id: generateRandomString(),
@@ -90,7 +103,8 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   const user_id = req.session.user_id;
   const user = users[user_id];
   if (!user) {
-    res.send("Nope, you can't do that");
+    res.status(403);
+    res.send("Only the url creator can delete the url");
   } else {
     delete urlDatabase[req.params.shortURL];
     res.redirect("/urls");

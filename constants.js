@@ -20,6 +20,27 @@ function generateRandomString() {
     return randShortURL;
 };
 
+// validating email input field on registration
+const validEmail = (input) => {
+  const atPosition = input.indexOf("@");
+  const dotPosition = input.lastIndexOf(".");
+  if (atPosition < 1 || dotPosition < 2) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+// validating a password input field on registration
+const validPassword = (input) => {
+  const minimumLength = 5;
+  if (input.length < minimumLength) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 // urls seen by user
 const urlsForUser = (id, database) => {
   const forUser = {};
@@ -32,5 +53,5 @@ const urlsForUser = (id, database) => {
   return forUser;
 };
 
-module.exports = { users, urlDatabase, generateRandomString, urlsForUser };
+module.exports = { users, urlDatabase, generateRandomString, validEmail, validPassword, urlsForUser };
 
