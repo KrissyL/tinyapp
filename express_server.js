@@ -30,8 +30,10 @@ app.post("/urls/:shortURL", (req, res) => {
     res.send("You must be the creator to edit a url");
   } else {
     const newURL = req.body.newURL;
-    urlDatabase[newURL] = urlDatabase[req.params.shortURL];
-    delete urlDatabase[req.params.shortURL];
+    urlDatabase[req.params.shortURL] = {
+      longURL: newURL,
+      userID: user.id
+    }
     res.redirect("/urls");
   }
 });
@@ -42,7 +44,7 @@ app.post("/urls", (req, res) => {
   const user = users[user_id];
   if (!user) {
     res.status(403);
-    res.send("You must be the creator to edit a url");
+    res.send("You must be a registered user to create a url");
   } else {
     const newLongURL = req.body.longURL;
     const newShortURL = generateRandomString();
