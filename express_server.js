@@ -111,6 +111,17 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   }
 });
 
+// redirect to "/urls" from "/"
+app.get("/", (req, res) => {
+  const user_id = req.session.user_id;
+  const user = users[user_id];
+  if (!user) {
+    res.redirect("/login");
+  } else {
+  res.redirect("/urls");
+  }
+});
+
 // make a route for "/urls"
 app.get("/urls", (req, res) => {
   const user_id = req.session.user_id;
