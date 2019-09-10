@@ -33,7 +33,7 @@ app.post("/urls/:shortURL", (req, res) => {
     urlDatabase[req.params.shortURL] = {
       longURL: newURL,
       userID: user.id
-    }
+    };
     res.redirect("/urls");
   }
 });
@@ -65,7 +65,7 @@ app.post("/register", (req, res) =>{
   if (!validEmail(req.body.email)) {
     res.send("Email is invalid, please try again");
   }
-  if (!validPassword(req.body.password)){
+  if (!validPassword(req.body.password)) {
     res.send("Password is too short, please try again");
   } else {
     const newUser = {
@@ -84,7 +84,7 @@ app.post("/login", (req, res) => {
   const user = findUserByEmail(req.body.email, users);
   if (!user) {
     res.redirect("/login/redir");
-  } else {    
+  } else {
     if (bcrypt.compareSync(req.body.password, user.hashedPassword)) {
       req.session.user_id = user.id;
       res.redirect("/urls");
@@ -121,7 +121,7 @@ app.get("/", (req, res) => {
   if (!user) {
     res.redirect("/login");
   } else {
-  res.redirect("/urls");
+    res.redirect("/urls");
   }
 });
 
