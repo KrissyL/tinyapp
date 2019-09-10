@@ -82,11 +82,12 @@ app.post("/login", (req, res) => {
   const user = findUserByEmail(req.body.email, users);
   if (!user) {
     res.redirect("/login/redir");
-  } else {
-    
+  } else {    
     if (bcrypt.compareSync(req.body.password, user.hashedPassword)) {
       req.session.user_id = user.id;
       res.redirect("/urls");
+    } else {
+      res.redirect("/login/redir");
     }
   }
 });
